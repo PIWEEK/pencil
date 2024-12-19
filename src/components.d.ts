@@ -5,6 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { Variant } from "./components/pc-button/pc-button";
+export { Variant } from "./components/pc-button/pc-button";
 export namespace Components {
     interface MyComponent {
         /**
@@ -20,6 +22,13 @@ export namespace Components {
          */
         "middle": string;
     }
+    interface PcButton {
+        "ariaLabel": string;
+        "disabled": boolean;
+        "icon": string;
+        "type": 'button' | 'submit' | 'reset';
+        "variant": Variant;
+    }
 }
 declare global {
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
@@ -28,8 +37,15 @@ declare global {
         prototype: HTMLMyComponentElement;
         new (): HTMLMyComponentElement;
     };
+    interface HTMLPcButtonElement extends Components.PcButton, HTMLStencilElement {
+    }
+    var HTMLPcButtonElement: {
+        prototype: HTMLPcButtonElement;
+        new (): HTMLPcButtonElement;
+    };
     interface HTMLElementTagNameMap {
         "my-component": HTMLMyComponentElement;
+        "pc-button": HTMLPcButtonElement;
     }
 }
 declare namespace LocalJSX {
@@ -47,8 +63,16 @@ declare namespace LocalJSX {
          */
         "middle"?: string;
     }
+    interface PcButton {
+        "ariaLabel"?: string;
+        "disabled"?: boolean;
+        "icon"?: string;
+        "type"?: 'button' | 'submit' | 'reset';
+        "variant"?: Variant;
+    }
     interface IntrinsicElements {
         "my-component": MyComponent;
+        "pc-button": PcButton;
     }
 }
 export { LocalJSX as JSX };
@@ -56,6 +80,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "pc-button": LocalJSX.PcButton & JSXBase.HTMLAttributes<HTMLPcButtonElement>;
         }
     }
 }
