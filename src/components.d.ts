@@ -29,6 +29,13 @@ export namespace Components {
         "type": 'button' | 'submit' | 'reset';
         "variant": Variant;
     }
+    interface PcIcon {
+        "name": string;
+    }
+}
+export interface PcButtonCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLPcButtonElement;
 }
 declare global {
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
@@ -37,15 +44,33 @@ declare global {
         prototype: HTMLMyComponentElement;
         new (): HTMLMyComponentElement;
     };
+    interface HTMLPcButtonElementEventMap {
+        "buttonClick": void;
+    }
     interface HTMLPcButtonElement extends Components.PcButton, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLPcButtonElementEventMap>(type: K, listener: (this: HTMLPcButtonElement, ev: PcButtonCustomEvent<HTMLPcButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLPcButtonElementEventMap>(type: K, listener: (this: HTMLPcButtonElement, ev: PcButtonCustomEvent<HTMLPcButtonElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLPcButtonElement: {
         prototype: HTMLPcButtonElement;
         new (): HTMLPcButtonElement;
     };
+    interface HTMLPcIconElement extends Components.PcIcon, HTMLStencilElement {
+    }
+    var HTMLPcIconElement: {
+        prototype: HTMLPcIconElement;
+        new (): HTMLPcIconElement;
+    };
     interface HTMLElementTagNameMap {
         "my-component": HTMLMyComponentElement;
         "pc-button": HTMLPcButtonElement;
+        "pc-icon": HTMLPcIconElement;
     }
 }
 declare namespace LocalJSX {
@@ -67,12 +92,17 @@ declare namespace LocalJSX {
         "ariaLabel"?: string;
         "disabled"?: boolean;
         "icon"?: string;
+        "onButtonClick"?: (event: PcButtonCustomEvent<void>) => void;
         "type"?: 'button' | 'submit' | 'reset';
         "variant"?: Variant;
+    }
+    interface PcIcon {
+        "name"?: string;
     }
     interface IntrinsicElements {
         "my-component": MyComponent;
         "pc-button": PcButton;
+        "pc-icon": PcIcon;
     }
 }
 export { LocalJSX as JSX };
@@ -81,6 +111,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
             "pc-button": LocalJSX.PcButton & JSXBase.HTMLAttributes<HTMLPcButtonElement>;
+            "pc-icon": LocalJSX.PcIcon & JSXBase.HTMLAttributes<HTMLPcIconElement>;
         }
     }
 }

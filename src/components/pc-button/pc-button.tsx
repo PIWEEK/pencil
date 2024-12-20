@@ -1,4 +1,4 @@
-import { Component, h, Prop } from '@stencil/core';
+import { Component, h, Prop, Event, EventEmitter } from '@stencil/core';
 
 export type Variant = 'primary' | 'secondary' | 'ghost' | 'destructive';
 
@@ -7,15 +7,18 @@ export type Variant = 'primary' | 'secondary' | 'ghost' | 'destructive';
   styleUrl: 'pc-button.css',
   shadow: true,
 })
-export class Button {
+export class ButtonComponent {
   @Prop({ reflect: true }) variant: Variant = 'primary';
   @Prop() icon: string;
   @Prop() type: 'button' | 'submit' | 'reset' = 'button';
   @Prop({ reflect: true }) disabled = false;
   @Prop() ariaLabel: string;
 
+  @Event() buttonClick: EventEmitter<void>;
+
   private handleClick = () => {
-    alert('Received the button click!');
+    console.log('Button clicked');
+    this.buttonClick.emit();
   };
 
   render() {
@@ -28,7 +31,7 @@ export class Button {
         aria-label={this.ariaLabel ? this.ariaLabel : null}
         onClick={this.handleClick}
       >
-        {this.icon && <span class="icon">{this.icon}</span>}
+        {this.icon && <pc-icon name="add" />}
         <span class="button--label">
           <slot />
         </span>
